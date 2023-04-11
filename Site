@@ -1,0 +1,68 @@
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+# HTML-pagina met opmaak over ChatGPT
+html_page = """
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ChatGPT</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f8f8f8;
+			color: #333333;
+			padding: 20px;
+			margin: 0;
+		}
+
+		h1 {
+			font-size: 48px;
+			text-align: center;
+			margin-top: 0;
+		}
+
+		p {
+			font-size: 24px;
+			margin-bottom: 10px;
+		}
+
+		a {
+			color: #008080;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+	</style>
+</head>
+<body>
+	<h1>ChatGPT</h1>
+	<p>ChatGPT is een AI-taalmodel van OpenAI dat getraind is om gesprekken te simuleren en vragen te beantwoorden op een breed scala aan onderwerpen.</p>
+	<p>Het model is getraind op enorme hoeveelheden tekst en gebruikt machine learning om te leren hoe menselijke taal werkt.</p>
+	<p>Meer informatie over ChatGPT is te vinden op de <a href="https://openai.com/models/chatting-davinci-002/">OpenAI-website</a>.</p>
+</body>
+</html>
+"""
+
+
+# HTTP-request handler class
+class ChatGPTRequestHandler(BaseHTTPRequestHandler):
+
+    # GET-handler voor requests
+    def do_GET(self):
+        # Set response code en headers
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+
+        # Schrijf de HTML-pagina naar de response body
+        self.wfile.write(bytes(html_page, 'utf-8'))
+
+
+# Maak de HTTP-server aan en luister op port 8000
+httpd = HTTPServer(('localhost', 8000), ChatGPTRequestHandler)
+print('Server gestart op port 8000')
+
+# Start de HTTP-server en blijf luisteren naar requests
+httpd.serve_forever()
